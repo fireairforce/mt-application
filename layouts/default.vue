@@ -10,7 +10,7 @@
   </el-container>
 </template>
 <script>
-import MyHeader from '@/components/public/header';
+import MyHeader from '@/components/public/header/index.vue';
 export default {
   components: {
     MyHeader
