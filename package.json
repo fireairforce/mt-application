@@ -15,7 +15,9 @@
     "cross-env": "^5.2.0",
     "element-ui": "^2.4.11",
     "koa": "^2.6.2",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "sass": "^1.23.0",
+    "sass-loader": "^8.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

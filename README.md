@@ -5,6 +5,8 @@
 npx create-nuxt-app mt-app 
 ```
 
+注意最好不要打开`prettier`这个配置，我觉得好傻逼哦....
+
 安装完成之后重新安装一次依赖然后再进行编译:`npm install --update-libary`
 
 注意`server`文件夹下面的文件刚开始是没有支持`es6`的。
