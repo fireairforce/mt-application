@@ -6,25 +6,16 @@
       </el-col>
       <el-col :span="15" class="center">
         <div class="wrapper">
-          <el-input placeholder="搜索商家或地点"></el-input>
-          <button class="el-button el-button-primary">
+          <el-input v-model="search" @focus="focus" @blur="blur" @input="input" placeholder="搜索商家或地点"></el-input>
+          <button class="el-button el-button--primary">
             <i class="el-icon-search"></i>
           </button>
-          <dl class="hotPlace">
+          <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
+            <dd v-for="(item,idx) in hotPlace" v-bind:key="idx">{{item}}</dd>
           </dl>
-          <dl class="searchList">
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
-            <dd>火锅</dd>
+          <dl v-if="isSearchList" class="searchList">
+            <dd v-for="(item,idx) in searchList" :key="idx">{{item}}</dd>
           </dl>
         </div>
         <p class="suggest">
@@ -76,7 +67,51 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      search:'',
+      isFocus: false,
+      hotPlace: [
+          '火锅',
+          '啤酒',
+          '海鲜',
+          '自助餐'
+      ],
+      searchList: [
+          '奶茶',
+          '烤鸭',
+          '烤鱼'
+      ]
+    };
+  },
+  computed: {
+    //   判断是否展示热门搜索框
+      isHotPlace() {
+          //   聚焦且没有值
+          return this.isFocus && !this.search
+      } ,
+      isSearchList() {
+          return this.isFocus && this.search; 
+      }
+  },
+  methods:{
+      focus() {
+          this.isFocus = true;
+      },
+      blur() {
+          let self = this;
+          //   这里添加一个延时的效果避免链接无法跳转
+          process.nextTick(()=>{
+              self.isFocus = false;
+          })
+      },
+    //   通过element的input组件里面自带的监听功能来监听input的变化
+      input() {
+          console.log(`hhhh`);
+      }
+  }
+};
 </script>
 
 <style>
