@@ -46,3 +46,13 @@ css: [
     '~assets/css/main.css'
   ],
 ```
+
+## Usage
+
+其实这框架用起来和`umi`差不多。里面`layouts`里面能够写一些模板，不过如果你想使用自定义的一些模板，需要在`pages`文件里面的`vue`文件里面去进行一个单独的配置(`xxx`就是`layouts`文件夹下面的文件名):
+
+```js
+export default {
+    layout: 'xxx' 
+}
+```
