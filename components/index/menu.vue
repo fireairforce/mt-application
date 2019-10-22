@@ -1,5 +1,6 @@
 <template>
   <div class="m-menu">
+
     <dl class="nav" @mouseleave="mouseleave">
       <dt>全部分类</dt>
       <dd v-for="(item,idx) in menu" :key="idx" @mouseenter="enter">
@@ -8,6 +9,7 @@
         <span class="arrow" />
       </dd>
     </dl>
+    
     <div class="detail" v-if="kind" @mouseenter="sover" @mouseleave="sout">
       <template v-for="(item, idx) in curdetail.child">
         <h4 :key="idx">{{item.title}}</h4>
