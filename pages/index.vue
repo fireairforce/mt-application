@@ -9,7 +9,7 @@
       </el-col>
     </el-row>
     <el-row :span="24">
-      3
+      <artistic />
     </el-row>
   </div>
 </template>
@@ -17,10 +17,12 @@
 <script>
 import EMenu from '@/components/index/menu';
 import ELife from '@/components/index/life';
+import Artistic from '@/components/index/artist';
 export default {
   components: {
      EMenu,
-     ELife
+     ELife,
+     Artistic
   }
 }
 </script>
