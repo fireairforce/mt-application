@@ -86,6 +86,7 @@ export default {
               message:'确认密码',
               trigger:'blur'
           },{
+            //   第二个参数是一个自定义的表单校验规则
               validator:(rule,value,callback)=>{
                  if(value==='') {
                      callback(new Error(`请再次输入密码`));

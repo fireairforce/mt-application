@@ -2,6 +2,7 @@
   <section class="m-style">
     <dl @mouseover="over">
       <dt>有格调</dt>
+      <!-- v-bind用于绑定动态的属性值 -->
       <dd :class="{active:kind === 'all'}" kind="all" keyword="景点">全部</dd>
       <dd :class="{active:kind === 'part'}" kind="part" keyword="美食">约会聚餐</dd>
       <dd :class="{active:kind === 'spa'}" kind="spa" keyword="丽人">丽人SPA</dd>
@@ -47,6 +48,12 @@ export default {
         cur() {
             return this.list[this.kind];
         }
+    },
+    methods: {
+      over(){}
+    },
+    async mounted() {
+
     },
 };
 </script>
