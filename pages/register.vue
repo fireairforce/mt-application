@@ -102,8 +102,50 @@ export default {
   },
   layout: "blank",
   methods: {
-    sendMsg() {},
-    register() {}
+    // 发送验证码
+    sendMsg() {
+       const self = this;
+       let namePass,emailPass;
+       if(self.timerid) {
+         return false;
+       }
+      //  首先校验一下姓名
+       this.$refs['ruleForm'].validateField('name',(valid) => {
+         namePass = valid;
+       })
+       self.statusMsg = ''
+       if(namePass) {
+         return false;
+       }
+       this.$refs['ruleForm'].validateField('email',(valid) => {
+         emailPass = valid;
+       })
+       if(!namePass && !emailPass) {
+         self.$axios.post(`/users/verify`,{
+          //  通过数据的双向绑定往data里面取值
+           username: encodeURIComponent(self.ruleForm.name),
+           email: self.ruleForm.email
+         }).then(({status,data}) => {
+            if(status === 200 && data && data.code === 0) {
+                // 验证码的倒计时
+                let count = 60;
+                self.statusMsg = `验证码已发送,剩余${count --}秒`
+                self.timerid = setInterval(function(){
+                  self.statusMsg = `验证码已发送,剩余${count --}秒`
+                  if(count ===0 ) {
+                    // 如果时间到了，就将定时器清空
+                     clearInterval(self.timerid);
+                  }
+                },1000)
+            } else {
+              self.statusMsg = data.msg;
+            }
+         })
+       }
+    },
+    register() {
+
+    }
   }
 };
 </script>
