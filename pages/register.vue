@@ -121,7 +121,7 @@ export default {
          emailPass = valid;
        })
        if(!namePass && !emailPass) {
-         self.$axios.post(`/users/verify`,{
+         self.$axios.post(`/users/verity`,{
           //  通过数据的双向绑定往data里面取值
            username: encodeURIComponent(self.ruleForm.name),
            email: self.ruleForm.email

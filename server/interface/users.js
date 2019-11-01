@@ -168,7 +168,7 @@ router.post(`/verity`, async (ctx, next) => {
 
 router.get(`/exit`, async (ctx, next) => {
   await ctx.logout();
-  if (!ctx.authenticate()) {
+  if (!ctx.isAuthenticated()) {
     ctx.body = {
       code: 0,
     };
