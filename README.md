@@ -58,3 +58,14 @@ export default {
 ```
 
 关于`element-ui`的表单验证算得上是一个比较复杂的功能了。在`pages/register`这个页面里面有个还行的示例`demo`吧，可以参考一波。
+
+## 接口设计
+
+必须的核心接口:
+```
+/users/signup
+/users/signin
+/users/verify
+/users/exit
+/users/getUser
+```
