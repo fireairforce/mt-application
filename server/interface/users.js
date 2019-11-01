@@ -180,19 +180,19 @@ router.get(`/exit`, async (ctx, next) => {
 });
 
 router.get(`/getUser`, async (ctx) => {
+  // 这里会先验证一下(这个api值ctx自带的一个api)
   if (ctx.isAuthenticated()) {
     const { username, email } = ctx.session.passport.user;
     ctx.body = {
-        user: username,
-        email
-    }
+      user: username,
+      email,
+    };
   } else {
-      ctx.body = {
-          user: '',
-          email: ''
-      }
+    ctx.body = {
+      user: "",
+      email: "",
+    };
   }
 });
-
 
 export default router;
