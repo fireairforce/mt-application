@@ -161,7 +161,38 @@ router.post(`/verity`, async (ctx, next) => {
     }
   });
   ctx.body = {
+    code: 0,
+    msg: "验证码已发送，可能会有延时，有效期为1min",
+  };
+});
+
+router.get(`/exit`, async (ctx, next) => {
+  await ctx.logout();
+  if (!ctx.authenticate()) {
+    ctx.body = {
       code: 0,
-      msg:'验证码已发送，可能会有延时，有效期为1min'
+    };
+  } else {
+    ctx.body = {
+      code: -1,
+    };
   }
 });
+
+router.get(`/getUser`, async (ctx) => {
+  if (ctx.isAuthenticated()) {
+    const { username, email } = ctx.session.passport.user;
+    ctx.body = {
+        user: username,
+        email
+    }
+  } else {
+      ctx.body = {
+          user: '',
+          email: ''
+      }
+  }
+});
+
+
+export default router;
