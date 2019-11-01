@@ -14,6 +14,7 @@ let router = new Router({
 let Store = new Redis().client;
 const User = mongoose.model("UserModel");
 
+// 这个是注册的接口
 router.post("/signup", async (ctx) => {
   // 这里要使用koa-bodyparser这个中间件去取值(把post的值映射到ctx.request.body上面去了)
   const { username, password, email, code } = ctx.request.body;
@@ -59,7 +60,8 @@ router.post("/signup", async (ctx) => {
     email,
   });
   if (nuser) {
-    let res = axios.post(`users/signup`, {
+    //   这里利用登录接口来完成注册功能
+    let res = axios.post(`users/signin`, {
       username,
       password,
     });
@@ -81,5 +83,85 @@ router.post("/signup", async (ctx) => {
       code: -1,
       msg: "注册失败",
     };
+  }
+});
+
+router.post(`/signin`, async (ctx, next) => {
+  // 这里就做一个验证就行了,使用在passport里面写的local策略即可
+  return Passport.authenticate("local", function(err, user, info, status) {
+    if (err) {
+      ctx.body = {
+        code: -1,
+        msg: err,
+      };
+    } else {
+      if (user) {
+        ctx.body = {
+          code: 0,
+          msg: "登录成功",
+          user,
+        };
+        return ctx.login(user);
+      } else {
+        ctx.body = {
+          code: 1,
+          msg: info,
+        };
+      }
+    }
+  })(ctx.next);
+});
+
+// 验证码验证部分
+router.post(`/verity`, async (ctx, next) => {
+  let { username } = ctx.request.body;
+  const saveExpire = await Store.hget(`nodemailer:${username}`, "expire");
+  if (saveExpire && new Date().getTime() < saveExpire) {
+    ctx.body = {
+      code: -1,
+      msg: "验证请求过于频繁",
+    };
+    return false;
+  }
+  let transporter = nodeMailer.createTransport({
+    host: Email.smtp.host,
+    post: 587,
+    secure: false,
+    auth: {
+      user: Email.smtp.user,
+      pass: Email.smtp.pass,
+    },
+  });
+  let ko = {
+    code: Email.smtp.code(),
+    expire: Email.smtp.expire(),
+    email: ctx.request.body.email,
+    user: ctx.request.body.username,
+  };
+  let mailOptions = {
+    from: `"认证邮件" <${Email.smtp.user}>`,
+    to: ko.email,
+    subject: "美团网注册码",
+    html: `您的邀请码是 ${ko.code}`,
+  };
+  await transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      //   把数组在redis里面做一次存储
+      Store.hmset(
+        `nodemailer:${ko.user}`,
+        "code",
+        ko.code,
+        "expire",
+        ko.expire,
+        "email",
+        ko.email,
+      );
+    }
+  });
+  ctx.body = {
+      code: 0,
+      msg:'验证码已发送，可能会有延时，有效期为1min'
   }
 });
