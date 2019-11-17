@@ -116,7 +116,9 @@ router.post(`/signin`, async (ctx, next) => {
 // 验证码验证部分
 router.post(`/verity`, async (ctx, next) => {
   let { username } = ctx.request.body;
-  const saveExpire = await Store.hget(`nodemailer:${username}`, "expire");
+  const saveExpire = await Store.hget(`nodemail:${username}`, "expire");
+  console.log('saveExpire: ', saveExpire);
+  console.log('new Date().getTime(): ', new Date().getTime());
   if (saveExpire && new Date().getTime() - saveExpire < 0) {
     ctx.body = {
       code: -1,
@@ -151,7 +153,7 @@ router.post(`/verity`, async (ctx, next) => {
     } else {
       //   把数组在redis里面做一次存储
       Store.hmset(
-        `nodemailer:${ko.user}`,
+        `nodemail:${ko.user}`,
         "code",
         ko.code,
         "expire",
