@@ -115,7 +115,7 @@ router.post(`/signin`, async (ctx, next) => {
         };
       }
     }
-  })(ctx.next);
+  })(ctx,next);
 });
 
 // 验证码验证部分
