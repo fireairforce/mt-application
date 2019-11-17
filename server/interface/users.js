@@ -60,7 +60,7 @@ router.post("/signup", async (ctx) => {
   });
   if (nuser) {
     //   这里利用登录接口来完成注册功能
-    let res = axios.post(`users/signin`, {
+    let res = await axios.post(`users/signin`, {
       username,
       password,
     });
@@ -118,7 +118,7 @@ router.post(`/verity`, async (ctx, next) => {
   const saveExpire = await Store.hget(`nodemail:${username}`, "expire");
   // console.log('saveExpire: ', saveExpire);
   // console.log('new Date().getTime(): ', new Date().getTime());
-  if (saveExpire && new Date().getTime() - saveExpire < 0) {
+  if (saveExpire && new Date().getTime() - saveExpire > 0) {
     ctx.body = {
       code: -1,
       msg: "验证请求过于频繁,1分钟发送一次",
