@@ -1,7 +1,6 @@
 import Router from "koa-router";
 import Redis from "koa-redis";
 import nodeMailer from "nodemailer";
-import UserModel from "../dbs/models/users";
 import Passport from "./utils/passport";
 import Email from "../dbs/config";
 import axios from "./utils/axios";
@@ -86,6 +85,8 @@ router.post("/signup", async (ctx) => {
   }
 });
 
+
+// 登陆接口
 router.post(`/signin`, async (ctx, next) => {
   // 这里就做一个验证就行了,使用在passport里面写的local策略即可
   return Passport.authenticate("local", function(err, user, info, status) {

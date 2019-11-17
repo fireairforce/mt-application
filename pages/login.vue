@@ -17,7 +17,7 @@
                   <i /> {{ error }}
               </h4>
               <p><span>账号登录</span></p>
-              <el-input v-model="usename" prefix-icon="profile"></el-input>
+              <el-input v-model="username" prefix-icon="profile"></el-input>
               <el-input v-model="password" prefix-icon="password" type="password"></el-input>
               <div class="foot">
                   <el-checkbox v-model="checked">7天之内自动登录</el-checkbox>
@@ -48,7 +48,9 @@ export default {
       }
   },
   methods:{
-      login(){}
+      login(){
+          console.log(`test login`);
+      }
   }
 }
 </script>

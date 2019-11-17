@@ -102,6 +102,7 @@ export default {
               } else if (value !== this.ruleForm.pwd) {
                 callback(new Error(`两次输入密码不同`));
               } else {
+                // 如果密码相同就直接回调了
                 callback();
               }
             }
@@ -160,10 +161,12 @@ export default {
       //  验证所有的校验规则是否通过了
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
+          // 验证通过表示通过,然后把数组传递到后台接口
           self.$axios
             .post(`/users/signup`, {
+              // 对username进行一个编码，因为可能是中文名称
               username: window.encodeURIComponent(self.ruleForm.name),
-              //  这里对密码的存储进行一个加密,记得MD5大写，后面要加上toString()
+              //  对密码进行一个加密(避免对密码的明文存储),MD5这里toString把数组转换成字符串
               password: CryptoJS.MD5(self.ruleForm.pwd).toString(),
               email: self.ruleForm.email,
               code: self.ruleForm.code
@@ -179,6 +182,7 @@ export default {
               } else {
                 self.error = `服务器出错，错误码:${status}`;
               }
+              // 加个定时器，定时清空error信息
               setTimeout(function() {
                 self.error = "";
               }, 1500);
