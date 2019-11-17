@@ -4,7 +4,7 @@ import nodeMailer from "nodemailer";
 import UserModel from "../dbs/models/users";
 import Passport from "./utils/passport";
 import Email from "../dbs/config";
-import axiso from "./utils/axios";
+import axios from "./utils/axios";
 import mongoose from "mongoose";
 
 let router = new Router({
@@ -23,7 +23,7 @@ router.post("/signup", async (ctx) => {
     const saveExpire = await Store.hget(`nodemail: ${username}`, "expire");
     if (code === saveCode) {
       // 检查验证码是否过期
-      if (new Date().getTime() > saveExpire) {
+      if (new Date().getTime()　- saveExpire > 0) {
         ctx.body = {
           code: -1,
           msg: "验证码已过期，请重新尝试",
@@ -116,10 +116,10 @@ router.post(`/signin`, async (ctx, next) => {
 router.post(`/verity`, async (ctx, next) => {
   let { username } = ctx.request.body;
   const saveExpire = await Store.hget(`nodemailer:${username}`, "expire");
-  if (saveExpire && new Date().getTime() < saveExpire) {
+  if (saveExpire && new Date().getTime() - saveExpire < 0) {
     ctx.body = {
       code: -1,
-      msg: "验证请求过于频繁",
+      msg: "验证请求过于频繁,1分钟发送一次",
     };
     return false;
   }
