@@ -1,10 +1,10 @@
 import Router from "koa-router";
 import Redis from "koa-redis";
 import nodeMailer from "nodemailer";
+import User from '../dbs/models/users';
 import Passport from "./utils/passport";
 import Email from "../dbs/config";
 import axios from "./utils/axios";
-import mongoose from "mongoose";
 
 let router = new Router({
   prefix: "/users",
@@ -40,7 +40,6 @@ router.post("/signup", async (ctx) => {
       msg: "请填写验证码",
     };
   }
-  const User = mongoose.model("User");
   let user = await User.find({
     username,
   });
