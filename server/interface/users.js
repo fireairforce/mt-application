@@ -17,8 +17,10 @@ router.post("/signup", async (ctx) => {
   // 这里要使用koa-bodyparser这个中间件去取值(把post的值映射到ctx.request.body上面去了)
   const { username, password, email, code } = ctx.request.body;
   if (code) {
-    const saveCode = await Store.hget(`nodemail: ${username}`, "code");
-    const saveExpire = await Store.hget(`nodemail: ${username}`, "expire");
+    const saveCode = await Store.hget(`nodemail:${username}`, "code");
+    // console.log('saveCode: ', saveCode);
+    const saveExpire = await Store.hget(`nodemail:${username}`, "expire");
+    // console.log('saveExpire: ', saveExpire);
     if (code === saveCode) {
       // 检查验证码是否过期
       if (new Date().getTime() - saveExpire > 0) {
@@ -33,12 +35,14 @@ router.post("/signup", async (ctx) => {
         code: -1,
         msg: "请填写正确的验证码",
       };
+      return ;
     }
   } else {
     ctx.body = {
       code: -1,
       msg: "请填写验证码",
     };
+    return ;
   }
   let user = await User.find({
     username,
@@ -68,11 +72,13 @@ router.post("/signup", async (ctx) => {
         code: 0,
         msg: "注册成功",
       };
+      return;
     } else {
       ctx.body = {
         code: -1,
         msg: "error",
       };
+      return;
     }
   }
   // 如果往库里写入数据发生了异常
@@ -81,13 +87,14 @@ router.post("/signup", async (ctx) => {
       code: -1,
       msg: "注册失败",
     };
+    return;
   }
 });
 
 // 登陆接口
 router.post(`/signin`, async (ctx, next) => {
   // 这里就做一个验证就行了,使用在passport里面写的local策略即可
-  return Passport.authenticate("local", function(err, user, info, status) {
+  return Passport.authenticate('local', function(err, user, info, status) {
     if (err) {
       ctx.body = {
         code: -1,
@@ -139,6 +146,7 @@ router.post(`/verity`, async (ctx, next) => {
     email: ctx.request.body.email,
     user: ctx.request.body.username,
   };
+  console.log(ko);
   let mailOptions = {
     from: `"认证邮件" <${Email.smtp.user}>`,
     to: ko.email,
@@ -161,6 +169,8 @@ router.post(`/verity`, async (ctx, next) => {
       );
     }
   });
+  // let qq = await Store.hget(`nodemail:${username}`, "expire");
+  // console.log(qq);
   ctx.body = {
     code: 0,
     msg: "验证码已发送，可能会有延时，有效期为1min",

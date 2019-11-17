@@ -2,8 +2,7 @@ import passport from "koa-passport";
 import LocalStrategy from "passport-local";
 import User from "../../dbs/models/users";
 // 使用passport这个中间价来处理一下登录这边的逻辑
-passport.use(
-  new LocalStrategy(async function(username, password, done) {
+passport.use(new LocalStrategy(async function(username, password, done) {
     let result = await User.findOne({ username });
     if (result != null) {
       //　使用数据库里面查询到的密码和输入的密码来做一个对比保证登录信息校验
