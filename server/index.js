@@ -10,6 +10,7 @@ import json from "koa-json";
 import dbConfig from "./dbs/config";
 import passport from "./interface/utils/passport";
 import users from "./interface/users";
+import { initSchemas } from "./dbs/init";
 
 const app = new Koa();
 
@@ -49,6 +50,8 @@ async function start() {
     port = process.env.PORT || 3000,
   } = nuxt.options.server;
 
+  // 初始化数据库模型
+  initSchemas(); 
   // Build in development
   if (config.dev) {
     const builder = new Builder(nuxt);
@@ -65,7 +68,6 @@ async function start() {
     ctx.req.ctx = ctx; // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
     nuxt.render(ctx.req, ctx.res);
   });
-
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,

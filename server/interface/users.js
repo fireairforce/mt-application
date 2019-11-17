@@ -11,7 +11,6 @@ let router = new Router({
 });
 
 let Store = new Redis().client;
-const User = mongoose.model("UserModel");
 
 // 这个是注册的接口
 router.post("/signup", async (ctx) => {
@@ -22,7 +21,7 @@ router.post("/signup", async (ctx) => {
     const saveExpire = await Store.hget(`nodemail: ${username}`, "expire");
     if (code === saveCode) {
       // 检查验证码是否过期
-      if (new Date().getTime()　- saveExpire > 0) {
+      if (new Date().getTime() - saveExpire > 0) {
         ctx.body = {
           code: -1,
           msg: "验证码已过期，请重新尝试",
@@ -41,6 +40,7 @@ router.post("/signup", async (ctx) => {
       msg: "请填写验证码",
     };
   }
+  const User = mongoose.model("User");
   let user = await User.find({
     username,
   });
@@ -85,7 +85,6 @@ router.post("/signup", async (ctx) => {
   }
 });
 
-
 // 登陆接口
 router.post(`/signin`, async (ctx, next) => {
   // 这里就做一个验证就行了,使用在passport里面写的local策略即可
@@ -117,8 +116,8 @@ router.post(`/signin`, async (ctx, next) => {
 router.post(`/verity`, async (ctx, next) => {
   let { username } = ctx.request.body;
   const saveExpire = await Store.hget(`nodemail:${username}`, "expire");
-  console.log('saveExpire: ', saveExpire);
-  console.log('new Date().getTime(): ', new Date().getTime());
+  // console.log('saveExpire: ', saveExpire);
+  // console.log('new Date().getTime(): ', new Date().getTime());
   if (saveExpire && new Date().getTime() - saveExpire < 0) {
     ctx.body = {
       code: -1,
