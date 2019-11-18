@@ -1,8 +1,9 @@
 ## Notes
+
 使用的是`create-nuxt-app`来对项目进行了一个创建。
 
 ```bash
-npx create-nuxt-app mt-app 
+npx create-nuxt-app mt-app
 ```
 
 注意最好不要打开`prettier`这个配置，我觉得好傻逼哦....
@@ -28,17 +29,19 @@ npx create-nuxt-app mt-app
 ```
 npm install babel-cli babel-preset-es2015
 ```
+
 新建一个`.babelrc`:
 
 ```json
 {
-    "presets": ["es2015"]
+  "presets": ["es2015"]
 }
 ```
 
 然后`server`目录下就可以使用`es6`的语法了。
 
 在`nuxt.config.js`里面可以去添加一些配置:
+
 ```js
 css: [
     'element-ui/lib/theme-chalk/index.css',
@@ -47,25 +50,53 @@ css: [
   ],
 ```
 
+`mongodb`数据库的导入命令:
+
+```bash
+mongoimport -d dbs -c test pois.dat
+# dbs是数据库名称  test 是数据结合collections的名称  pois.dat是数据源
+```
+
 ## Usage
 
 其实这框架用起来和`umi`差不多。里面`layouts`里面能够写一些模板，不过如果你想使用自定义的一些模板，需要在`pages`文件里面的`vue`文件里面去进行一个单独的配置(`xxx`就是`layouts`文件夹下面的文件名):
 
 ```js
 export default {
-    layout: 'xxx' 
-}
+  layout: "xxx",
+};
 ```
 
 关于`element-ui`的表单验证算得上是一个比较复杂的功能了。在`pages/register`这个页面里面有个还行的示例`demo`吧，可以参考一波。
 
-## 接口设计
+## Service Api
 
-必须的核心接口:
-```
-/users/signup
-/users/signin
-/users/verify
-/users/exit
-/users/getUser
+后端接口服务使用`koa`框架完成，结合了一系列`koa`中间件。
+数据存储采用`mongodb`数据库，缓存利用了`redis`服务器。
+
+|            接口             |      说明      |
+| :-------------------------: | :------------: |
+|       `/users/signup`       |      注册      |
+|       `/users/verify`       |     验证码     |
+|       `/users/sigin`        |      登录      |
+|        `/users/exit`        |      退出      |
+|      `/users/getUser`       |  获取用户信息  |
+|     `/geo/getPosition`      | 根据 IP 查地址 |
+|       `/geo/province`       |    获取省份    |
+|     `/geo/province/:id`     |    获取省份    |
+|         `/geo/city`         |    获取城市    |
+|       `/geo/hotCity`        |  获取热门城市  |
+|         `/geo/menu`         |  获取美食菜单  |
+|        `/search/top`        |                |
+| `/search/resultsByKeywords` |                |
+|     `/search/hotPlace`      |                |
+|    `/search/product/:id`    |                |
+
+## Run
+
+```bash
+# 本地环境
+npm run dev
+# 打包
+npm run build
 ```
