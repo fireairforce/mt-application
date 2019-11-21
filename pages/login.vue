@@ -48,6 +48,9 @@ export default {
   methods: {
     login() {
       let self = this;
+      // self.$axios(`/geo/getPosition`).then(res=>{
+      //   console.log(res);
+      // })
       self.$axios
         .post(`/users/signin`, {
           //   这里要解码一下，不然服务端收到乱码

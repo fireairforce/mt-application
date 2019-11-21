@@ -57,6 +57,8 @@ mongoimport -d dbs -c test pois.dat
 # dbs是数据库名称  test 是数据结合collections的名称  pois.dat是数据源
 ```
 
+有个配置修复栈溢出的脚本来自于[blog](https://blog.csdn.net/weixin_45115705/article/details/98784259)
+
 ## Usage
 
 其实这框架用起来和`umi`差不多。里面`layouts`里面能够写一些模板，不过如果你想使用自定义的一些模板，需要在`pages`文件里面的`vue`文件里面去进行一个单独的配置(`xxx`就是`layouts`文件夹下面的文件名):
