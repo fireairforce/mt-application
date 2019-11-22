@@ -1,10 +1,14 @@
 import Router from "koa-router";
 import axios from "./utils/axios";
+import Province from "./../dbs/models/province";
 
 let router = new Router({ prefix: "/geo" });
 
-router.get(`/getPosition`, async (ctx) => {
-  let { status, data: { province, city } } = await axios.get(`http://cp-tools.cn/geo/getPosition`);
+router.get(`/getPosition`, async ctx => {
+  let {
+    status,
+    data: { province, city }
+  } = await axios.get(`http://cp-tools.cn/geo/getPosition`);
   if (status === 200) {
     ctx.body = {
       province,
@@ -17,5 +21,18 @@ router.get(`/getPosition`, async (ctx) => {
     };
   }
 });
+
+router.get(`/province`, async ctx => {
+  let province = await Province.find();
+  ctx.body = {
+    province: province.map(item => {
+      return {
+        id: item.id,
+        name: item.value
+      };
+    })
+  };
+});
+
 
 export default router;
