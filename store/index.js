@@ -1,8 +1,22 @@
-import axios from '../server/interface/utils/axios'
+import axios from "../server/interface/utils/axios";
 
 export const actions = {
-    async nuxtServerInit({commit },{req}) {
-      const {status, data:{ city,province } } = await axios.get('/geo/getPosition');
-      commit('geo/setPosition', status === 200 ? { city,province} :{city:'',province:''})
-    }
-}
+  async nuxtServerInit({ commit }, { req, app }) {
+    // console.log(app.store.state);
+    // console.log(req);
+    const {
+      status,
+      data: { city, province }
+    } = await axios.get("/geo/getPosition");
+    commit(
+      "geo/setPosition",
+      status === 200 ? { city, province } : { city: "", province: "" }
+    );
+    const {
+      status: status2,
+      data: { menu }
+    } = await app.$axios.get("geo/menu");
+    console.log(menu);
+    commit("home/setMenu", status2 === 200 ? menu : []);
+  }
+};

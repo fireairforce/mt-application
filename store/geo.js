@@ -1,4 +1,6 @@
-export const state = () => ({position: {}})
+export const state = () => ({position: {
+  city:''
+}})
 
 export const mutations = {
   setPosition(state, val) {
