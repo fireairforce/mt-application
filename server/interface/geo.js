@@ -46,4 +46,48 @@ router.get(`/province/:id`, async ctx => {
   };
 });
 
+router.get(`/city`, async ctx => {
+  let city = [];
+  let result = await City.find();
+  result.forEach(item => {
+    city = city.concat(item.value);
+  });
+  ctx.body = {
+    code: 0,
+    city: city.map(item => {
+      return {
+        province: item.province,
+        id: item.id,
+        name:
+          item.name === "市辖区" || item.name === "省直辖县级行政区划"
+            ? item.province
+            : item.value
+      };
+    })
+  };
+});
+
+router.get(`/hotCity`, async (ctx) => {
+  let list = [
+    '北京市',
+    '上海市',
+    '广州市',
+    '深圳市',
+    '天津市',
+    '西安市',
+    '杭州市',
+    '南京市',
+    '武汉市',
+    '成都市'
+  ]
+  let result = await City.find();
+  let nList = [];
+  result.forEach(item => {
+    nList = nList.concat(item.value.filter(k=>list.includes(k.name) ||list.includes(k.province) ))
+  })
+  ctx.body = {
+    hots : nList
+  }
+})
+
 export default router;
