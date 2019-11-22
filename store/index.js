@@ -16,7 +16,7 @@ export const actions = {
       status: status2,
       data: { menu }
     } = await app.$axios.get("geo/menu");
-    console.log(menu);
+    // console.log(menu);
     commit("home/setMenu", status2 === 200 ? menu : []);
   }
 };

@@ -5,7 +5,7 @@
   "author": "fireairforce",
   "private": true,
   "scripts": {
-    "fix-memory-limit": "cross-env LIMIT=8192 increase-memory-limit", 
+    "fix-memory-limit": "cross-env LIMIT=8192 increase-memory-limit",
     "dev": "sh mongo.sh && cross-env NODE_ENV=development nodemon server/index.js --watch server --exec babel-node",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js --exec babel-node",
@@ -26,6 +26,7 @@
     "koa-redis": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa-session": "^5.12.3",
+    "lodash": "^4.17.15",
     "mongoose": "^5.7.7",
     "nodemailer": "^6.3.1",
     "nuxt": "^2.0.0",
