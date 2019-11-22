@@ -21,18 +21,14 @@
           </button>
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, idx) in hotPlace" v-bind:key="idx">{{ item }}</dd>
+            <dd v-for="(item, idx) in $store.state.home.hotPlace.slice(0,4)" v-bind:key="idx">{{ item.name }}</dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item, idx) in searchList" :key="idx">{{ item.name }}</dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
-          <a href="#">故宫博物馆</a>
+          <a href="#" v-for="(item, idx) in $store.state.home.hotPlace.slice(4,8)" v-bind:key="idx">{{item.name}}</a>
         </p>
         <ul class="nav">
           <li>
