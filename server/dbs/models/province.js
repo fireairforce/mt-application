@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const Province = new Schema({
   id: {
     type: String,
-    required: true
+    require: true
   },
   value: {
     type: String,
-    required: true
+    require: true
   }
 });
 

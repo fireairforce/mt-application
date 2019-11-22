@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const City = new Schema({
     id:{
        type: String,
-       required: true, 
+       require: true, 
     },
     value: {
         type: Array,
-        required: true,
+        require: true,
     }
 })
 

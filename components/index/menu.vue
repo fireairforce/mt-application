@@ -16,7 +16,6 @@
         <span v-for="v in item.child" :key="v">{{v}}</span>
       </template>
     </div>
-
   </div>
 </template>
 
