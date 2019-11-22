@@ -2,7 +2,7 @@ import Router from "koa-router";
 import axios from "./utils/axios";
 import Province from "./../dbs/models/province";
 import City from "./../dbs/models/cities";
-
+import Menu from "./../dbs/models/menu";
 let router = new Router({ prefix: "/geo" });
 
 router.get(`/getPosition`, async ctx => {
@@ -87,6 +87,13 @@ router.get(`/hotCity`, async (ctx) => {
   })
   ctx.body = {
     hots : nList
+  }
+})
+
+router.get(`/menu`,async (ctx) => {
+  const result = await Menu.findOne();
+  ctx.body = {
+    menu: result.menu
   }
 })
 
